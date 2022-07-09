@@ -1,6 +1,6 @@
 namespace Prolog.Objetos;
 
-public interface Clausula
+public class Clausula
 {
-    
+    public string _name { get; set; }
 }
