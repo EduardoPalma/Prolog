@@ -1,22 +1,24 @@
-padrede('Juan'). 
+padrede('Juan', 'Maria'). 
 padrede('Pablo', 'Juan'). 
 padrede('Pablo', 'Marcela'). 
 padrede('Carlos', 'Débora').
 
+mama(pedro,juan).
+mama(casa,cosita).
 
 hijode(A,B) :- padrede(B,A).
 
-abuelode(A,B) :- 
-   padrede(A,C), 
-   padrede(C,B).
+abuelode(A,B) :-
+padrede(A,C),
+padrede(C,B).
 
-hermanode(A,B) :- 
-   padrede(C,A), 
-   padrede(C,B).        
-
+hermanode(A,B) :-
+padrede(C,A), 
+padrede(C,B).        
+   
 familiarde(A,B) :- 
-   padrede(A,B).
+padrede(A,B).
 familiarde(A,B) :-
-   hijode(A,B). 
+hijode(A,B). 
 familiarde(A,B) :- 
-   hermanode(A,B).
+hermanode(A,B).

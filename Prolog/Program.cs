@@ -4,6 +4,7 @@ using Prolog.Arbol;
 using Prolog.LecturaArchivo;
 using Prolog.Objetos;
 
+/*
 // es un hecho de asume que no tiene mas hijos
 Clausula c1 = new Hecho("padrede");
 // es una regla debe contener hijos ya sea, Hechos o reglas
@@ -30,7 +31,7 @@ List<Clausula> list = new List<Clausula>();
 list.Add(c4);
 Arbol a = new Arbol(list);
 a.Imprimir(list);
+*/
 
 
-
-//LecturaArchivo lecturaArchivo = new LecturaArchivo("documento.txt");
+LecturaArchivo lecturaArchivo = new LecturaArchivo("documento.txt");

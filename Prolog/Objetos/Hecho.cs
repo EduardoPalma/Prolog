@@ -14,4 +14,16 @@ public class Hecho : Clausula
     {
         ListTerminos.Add(listaAtomos);
     }
+
+    public void MostrarTerminos()
+    {
+        foreach (var ListaAtomos in ListTerminos)
+        {
+            foreach (var atomo in ListaAtomos)
+            {
+                Console.Write(atomo.NombreAtomo + " ");
+            }
+            Console.WriteLine();
+        }
+    }
 }
