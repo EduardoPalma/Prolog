@@ -10,7 +10,8 @@ hijode(A,B) :- padrede(B,A).
 
 abuelode(A,B) :-
 padrede(A,C),
-padrede(C,B).
+padrede(C,B)
+padrede(C,A,B).
 
 hermanode(A,B) :-
 padrede(C,A), 

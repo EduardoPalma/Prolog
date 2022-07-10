@@ -37,12 +37,12 @@ public class LecturaArchivo
             }
             
         }
-
+        /*
         foreach (var variableHecho in ListaHechos)
         {
             Console.WriteLine(variableHecho._name);
             variableHecho.MostrarTerminos();
-        }
+        }*/
     }
 
     private List<Atomo> SacarTerminos(string variables)
@@ -83,8 +83,22 @@ public class LecturaArchivo
             string clausulas = clausula.Substring(len2);
             List<string> reglaParce = NombreTerminos(nombreRegla);
             List<Atomo> Variables = SacarTerminos(reglaParce[1]);
-            Console.WriteLine(reglaParce[0] + " " + Variables[0].NombreAtomo + " "+ Variables[1].NombreAtomo);
+            //Console.WriteLine(reglaParce[0] + " " + Variables[0].NombreAtomo + " "+ Variables[1].NombreAtomo);
+            string[] clausulasRegla = Regex.Matches(clausulas,@"[a-zZ]+\([\,[aA-zZ]*|[aA-zZ]*]\)").
+                Select(m => m.Value).ToArray();
+            foreach (var c in clausulasRegla)
+            {
+                List<string> nombreTerminos = NombreTerminos(c+")");
+                Console.WriteLine(nombreTerminos[0]);
+                List<Atomo> Terminos = SacarTerminos(nombreTerminos[1]);
+                foreach (var atomo in Terminos)
+                {
+                    Console.Write(atomo.NombreAtomo+ " ");
+                }
+                Console.WriteLine();
+            }
             
+
         }
         else
         {
