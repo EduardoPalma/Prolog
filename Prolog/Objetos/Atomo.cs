@@ -1,11 +1,16 @@
 namespace Prolog.Objetos;
 
-public class Atomo
+public class Atomo : Termino
 {
-    internal string NombreAtomo { get; set; }
+    private string NombreAtomo { get; set; }
 
     public Atomo(string nombreAtomo)
     {
         NombreAtomo = nombreAtomo;
+    }
+    
+    public string GetNombre()
+    {
+        return NombreAtomo;
     }
 }

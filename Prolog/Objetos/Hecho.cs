@@ -2,28 +2,31 @@ namespace Prolog.Objetos;
 
 public class Hecho : Clausula
 {
-    private List<List<Atomo>> ListTerminos { get; set; }
+    private List<List<Termino>> ListTerminos { get; set; }
 
     public Hecho(string nombre)
     {
         _name = nombre;
-        ListTerminos = new List<List<Atomo>>();
+        ListTerminos = new List<List<Termino>>();
     }
 
-    public void InsertarTerminos(List<Atomo> listaAtomos)
+    public void InsertarTerminos(List<Termino> listaAtomos)
     {
         ListTerminos.Add(listaAtomos);
     }
 
-    public void MostrarTerminos()
+    public void MostrarTerminos(string espacios)
     {
-        foreach (var ListaAtomos in ListTerminos)
+        foreach (var listaAtomos in ListTerminos)
         {
-            foreach (var atomo in ListaAtomos)
+            Console.Write(espacios);
+            foreach (var atomo in listaAtomos)
             {
-                Console.Write(atomo.NombreAtomo + " ");
+                Atomo a = (Atomo)atomo;
+                Console.Write(a.GetNombre() + " ");
             }
             Console.WriteLine();
         }
     }
+    
 }

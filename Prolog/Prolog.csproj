@@ -12,6 +12,10 @@
       <Content Include="documento.txt">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </Content>
+      <None Remove="prueba2.txt" />
+      <Content Include="prueba2.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

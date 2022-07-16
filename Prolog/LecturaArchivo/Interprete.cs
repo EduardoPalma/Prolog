@@ -5,13 +5,13 @@ using Prolog.Objetos;
 
 namespace Prolog.LecturaArchivo;
 
-public class LecturaArchivo
+public class Interprete
 {
     private String _path;
-    private List<Hecho> ListaHechos;
-    private List<Regla> ListaReglas;
+    public List<Hecho> ListaHechos { get; set; }
+    public List<Regla> ListaReglas { get; set; }
 
-    public LecturaArchivo(String path)
+    public Interprete(String path)
     {
         _path = path;
         ListaHechos = new List<Hecho>();
@@ -37,32 +37,42 @@ public class LecturaArchivo
             }
             
         }
-        /*
-        foreach (var variableHecho in ListaHechos)
-        {
-            Console.WriteLine(variableHecho._name);
-            variableHecho.MostrarTerminos();
-        }*/
     }
 
-    private List<Atomo> SacarTerminos(string variables)
+    private List<Termino> SacarTerminos(string variables, int type)
     {
-        List<Atomo> terminos = new List<Atomo>();
+        List<Termino> terminos = new List<Termino>();
         if (variables.Contains(","))
         {
             variables = Regex.Replace(variables, "[()']", String.Empty);
             string[] ter = variables.Split(",");
-            foreach (var atomo in ter)
+            foreach (var termino in ter)
             {
-                Atomo a = new Atomo(atomo);
-                terminos.Add(a);
+                if (type == 0)
+                {
+                    Termino a = new Atomo(termino);
+                    terminos.Add(a);
+                }
+                else
+                {
+                    Termino a = new Variable(termino);
+                    terminos.Add(a);
+                }
             }
         }
         else
         {
             variables = Regex.Replace(variables,"[()']",String.Empty);
-            Atomo a = new Atomo(variables);
-            terminos.Add(a);
+            if (type == 0)
+            {
+                Termino a = new Atomo(variables);
+                terminos.Add(a);
+            }
+            else
+            {
+                Termino a = new Variable(variables);
+                terminos.Add(a);
+            }
         }
         
         return terminos;
@@ -81,22 +91,7 @@ public class LecturaArchivo
             int len2 = clausula.IndexOf('-')+1;
             string nombreRegla = clausula.Substring(0, len1);
             string clausulas = clausula.Substring(len2);
-            List<string> reglaParce = NombreTerminos(nombreRegla);
-            List<Atomo> Variables = SacarTerminos(reglaParce[1]);
-            //Console.WriteLine(reglaParce[0] + " " + Variables[0].NombreAtomo + " "+ Variables[1].NombreAtomo);
-            string[] clausulasRegla = Regex.Matches(clausulas,@"[a-zZ]+\([\,[aA-zZ]*|[aA-zZ]*]\)").
-                Select(m => m.Value).ToArray();
-            foreach (var c in clausulasRegla)
-            {
-                List<string> nombreTerminos = NombreTerminos(c+")");
-                Console.WriteLine(nombreTerminos[0]);
-                List<Atomo> Terminos = SacarTerminos(nombreTerminos[1]);
-                foreach (var atomo in Terminos)
-                {
-                    Console.Write(atomo.NombreAtomo+ " ");
-                }
-                Console.WriteLine();
-            }
+            InsertarRegla(nombreRegla,clausulas);
             
 
         }
@@ -113,15 +108,49 @@ public class LecturaArchivo
         if (ListaHechos.FindIndex(x => x._name.Equals(nombre)) != -1)
         {
             Hecho hecho = ListaHechos.Find(x => x._name.Equals(nombre))!;
-            hecho.InsertarTerminos(SacarTerminos(terminos));
+            hecho.InsertarTerminos(SacarTerminos(terminos,0));
         }
         else
         {
-            newHecho.InsertarTerminos(SacarTerminos(terminos));
+            newHecho.InsertarTerminos(SacarTerminos(terminos,0));
             ListaHechos.Add(newHecho);
         }
     }
 
+    private void InsertarRegla(string nombre,string clausulas)
+    {
+        List<string> reglaParce = NombreTerminos(nombre);
+        List<Termino> variables = SacarTerminos(reglaParce[1],1);
+
+        if (ListaReglas.FindIndex(x => x._name.Equals(reglaParce[0])) != -1)
+        {
+            Regla r = ListaReglas.Find(x => x._name.Equals(reglaParce[0]))!;
+            ListaClausulasRegla(r,clausulas);
+            
+        }
+        else
+        {
+            Regla r = new Regla(reglaParce[0]);
+            r.InsertarVariables(variables);
+            ListaClausulasRegla(r,clausulas);
+            ListaReglas.Add(r);
+        }
+    }
+
+    private void ListaClausulasRegla(Regla r, string clausulas)
+    {
+        string[] clausulasRegla = Regex.Matches(clausulas,@"[a-zZ]+\([\,[aA-zZ]*|[aA-zZ]*]\)").
+            Select(m => m.Value).ToArray();
+        foreach (var clau in clausulasRegla)
+        {
+            List<string> nombreTerminos = NombreTerminos(clau+")");
+            List<Termino> Terminos = SacarTerminos(nombreTerminos[1],1);
+            Hecho c = new Hecho(nombreTerminos[0]);
+            c.InsertarTerminos(Terminos);
+            r.InsertarClausula(c);
+            r.InsertarTerminoClausulas(Terminos);
+        }
+    }
     private List<string> NombreTerminos(string clausula)
     {
         

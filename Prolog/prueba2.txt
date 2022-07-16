@@ -1,0 +1,9 @@
+enemy(cuba, america).
+missile(ballistic).
+weapon(Y) :- missile(Y).
+american(robert).
+american(ariel).
+sells(robert, ballistic, cuba).
+sells(ariel, ballistic, cuba).
+hostile(Z) :- enemy(Z, america).
+criminal(X) :- american(X), weapon(Y), sells(X, Y, Z), hostile(Z).
