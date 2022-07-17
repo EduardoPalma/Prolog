@@ -5,7 +5,7 @@ namespace Prolog.Arbol;
 
 public class Arbol
 {
-    private List<Clausula> Clausulas { get; set; }
+    public List<Clausula> Clausulas { get; set; }
     private Interprete i;
     public Arbol(Interprete i)
     {
@@ -42,13 +42,13 @@ public class Arbol
             {
                 if (terminos is Hecho)
                 {
-                    Console.WriteLine(Espacios(i)+terminos._name +" is H");
+                    Console.WriteLine(Espacios(i)+terminos.Name +" is H");
                     Hecho h = (Hecho)terminos;
                     h.MostrarTerminos(Espacios(i+1));
                 }
                 else
                 {
-                    Console.WriteLine(""+Espacios(i)+ terminos._name+ " is R");
+                    Console.WriteLine(""+Espacios(i)+ terminos.Name+ " is R");
                     var r = (Regla)terminos;
                     //r.MostrarTerminosClausulas();
                     Imprimir(r.ListaClausulas,i+1);
@@ -65,14 +65,14 @@ public class Arbol
         {
             for (int j = 0; j < regla.ListaClausulas.Count; j++)
             {
-                Hecho h = BuscarHecho(regla.ListaClausulas[j]._name);
+                Hecho h = BuscarHecho(regla.ListaClausulas[j].Name);
                 if (h != null)
                 {
                     regla.ListaClausulas[j] = h;
                 }
                 else
                 {
-                    int index = BuscarRegla(regla.ListaClausulas[j]._name);
+                    int index = BuscarRegla(regla.ListaClausulas[j].Name);
                     regla.ListaClausulas[j] = Clausulas[index];
                     Clausulas.RemoveAt(index);
                 }
@@ -85,7 +85,7 @@ public class Arbol
     {
         foreach (var hecho in i.ListaHechos)
         {
-            if (hecho._name.Equals(nombreHecho))
+            if (hecho.Name.Equals(nombreHecho))
             {
                 return hecho;
             }
@@ -99,7 +99,7 @@ public class Arbol
 
         for (int i = 0; i < Clausulas.Count; i++)
         {
-            if (Clausulas[i]._name.Equals(nombreRegla))
+            if (Clausulas[i].Name.Equals(nombreRegla))
             {
                 return i;
             }

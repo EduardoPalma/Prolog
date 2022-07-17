@@ -39,12 +39,12 @@ public class Interprete
         }
     }
 
-    private List<Termino> SacarTerminos(string variables, int type)
+    private static List<Termino> SacarTerminos(string variables, int type)
     {
         List<Termino> terminos = new List<Termino>();
         if (variables.Contains(","))
         {
-            variables = Regex.Replace(variables, "[()']", String.Empty);
+            variables = Regex.Replace(variables, "[()]", String.Empty);
             string[] ter = variables.Split(",");
             foreach (var termino in ter)
             {
@@ -62,7 +62,7 @@ public class Interprete
         }
         else
         {
-            variables = Regex.Replace(variables,"[()']",String.Empty);
+            variables = Regex.Replace(variables,"[()]",String.Empty);
             if (type == 0)
             {
                 Termino a = new Atomo(variables);
@@ -105,9 +105,9 @@ public class Interprete
     private void InsertarHecho(string nombre, string terminos)
     {
         Hecho newHecho = new Hecho(nombre);
-        if (ListaHechos.FindIndex(x => x._name.Equals(nombre)) != -1)
+        if (ListaHechos.FindIndex(x => x.Name.Equals(nombre)) != -1)
         {
-            Hecho hecho = ListaHechos.Find(x => x._name.Equals(nombre))!;
+            Hecho hecho = ListaHechos.Find(x => x.Name.Equals(nombre))!;
             hecho.InsertarTerminos(SacarTerminos(terminos,0));
         }
         else
@@ -122,9 +122,9 @@ public class Interprete
         List<string> reglaParce = NombreTerminos(nombre);
         List<Termino> variables = SacarTerminos(reglaParce[1],1);
 
-        if (ListaReglas.FindIndex(x => x._name.Equals(reglaParce[0])) != -1)
+        if (ListaReglas.FindIndex(x => x.Name.Equals(reglaParce[0])) != -1)
         {
-            Regla r = ListaReglas.Find(x => x._name.Equals(reglaParce[0]))!;
+            Regla r = ListaReglas.Find(x => x.Name.Equals(reglaParce[0]))!;
             ListaClausulasRegla(r,clausulas);
             
         }
@@ -151,7 +151,7 @@ public class Interprete
             r.InsertarTerminoClausulas(Terminos);
         }
     }
-    private List<string> NombreTerminos(string clausula)
+    private static List<string> NombreTerminos(string clausula)
     {
         
         int len = clausula.IndexOf('(');
@@ -161,5 +161,12 @@ public class Interprete
         nombreTermino.Add(nombre);
         nombreTermino.Add(terminos);
         return nombreTermino;
+    }
+
+    public static Consult ValidarConsulta(string consulta)
+    {
+        List<string> nombreTerminos = NombreTerminos(consulta);
+        Consult c = new Consult(nombreTerminos[0], SacarTerminos(nombreTerminos[1],0));
+        return c;
     }
 }

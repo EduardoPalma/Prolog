@@ -2,13 +2,9 @@ namespace Prolog.Objetos;
 
 public class Regla : Clausula
 {
-    internal List<Clausula> ListaClausulas { get; set; }
-    private List<List<Termino>> ListaTerminoCLausulas { get; set; }
-    private List<List<Termino>> ListTerminos { get; set; }
-
     public Regla(string nombre)
     {
-        _name = nombre;
+        Name = nombre;
         ListaClausulas = new List<Clausula>();
         ListTerminos = new List<List<Termino>>();
         ListaTerminoCLausulas = new List<List<Termino>>();
@@ -33,7 +29,7 @@ public class Regla : Clausula
     {
         foreach (var clausula in ListaClausulas)
         {
-            Console.Write(clausula._name + " ");
+            Console.Write(clausula.Name + " ");
             Hecho h = (Hecho)clausula;
             h.MostrarTerminos("");
         }
@@ -47,7 +43,7 @@ public class Regla : Clausula
             foreach (var t in terminos)
             {
                 Variable v = (Variable)t;
-                Console.Write("  "+v.GetNombre() + " ");
+                Console.Write("  "+v.Name + " ");
             }
         }
     }
@@ -59,7 +55,7 @@ public class Regla : Clausula
             foreach (var t in terminos)
             {
                 Variable v = (Variable)t;
-                Console.Write("  "+v.GetNombre() + " ");
+                Console.Write("  "+v.Name + " ");
             }
         }
     }

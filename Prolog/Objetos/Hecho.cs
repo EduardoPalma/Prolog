@@ -2,11 +2,10 @@ namespace Prolog.Objetos;
 
 public class Hecho : Clausula
 {
-    private List<List<Termino>> ListTerminos { get; set; }
-
+    
     public Hecho(string nombre)
     {
-        _name = nombre;
+        Name = nombre;
         ListTerminos = new List<List<Termino>>();
     }
 
@@ -23,7 +22,7 @@ public class Hecho : Clausula
             foreach (var atomo in listaAtomos)
             {
                 Atomo a = (Atomo)atomo;
-                Console.Write(a.GetNombre() + " ");
+                Console.Write(a.Name + " ");
             }
             Console.WriteLine();
         }
